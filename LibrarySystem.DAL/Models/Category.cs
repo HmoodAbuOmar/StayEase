@@ -1,8 +1,8 @@
 ﻿namespace LibrarySystem.DAL.Models
 {
-    public class Category
+    public class Category : BaseModel
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public List<Book>? Books { get; set; }
+        public List<CategoryTranlsation>? Translations { get; set; }
     }
 }
