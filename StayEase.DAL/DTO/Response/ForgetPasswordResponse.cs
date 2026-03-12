@@ -1,8 +1,6 @@
 ﻿namespace StayEase.DAL.DTO.Response
 {
-    public class RegisterResponse : BaseResponse
+    public class ForgetPasswordResponse : BaseResponse
     {
-
-
     }
 }

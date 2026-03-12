@@ -8,6 +8,9 @@ namespace StayEase.BLL.Service
         Task<RegisterResponse> RegisterAsync(RegisterRequest request);
         Task<LoginResponse> LoginAsync(LoginRequest request);
         Task<bool> ConfirmEmailAsync(string token, string userId);
+        Task<ForgetPasswordResponse> ForgetPassword(ForgetPasswordRequest request);
+        Task<ResetPasswordResponse> ResetPassword(ResetPasswordRequest request);
+
 
     }
 }

@@ -1,0 +1,22 @@
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
+using StayEase.BLL.Service;
+using StayEase.DAL.Repository;
+using StayEase.DAL.Utilits;
+
+namespace StayEase.PL
+{
+    public static class AppConfiguration
+    {
+        public static void Configuration(IServiceCollection Services)
+        {
+            Services.AddScoped<IHotelRepository, HotelRepository>();
+            Services.AddScoped<IHotelService, HotelService>();
+            Services.AddScoped<ISeedData, RoleSeedData>();
+            Services.AddScoped<ISeedData, UserSeedData>();
+            Services.AddScoped<IAuthenticationService, AuthenticationService>();
+            Services.AddTransient<IEmailSender, EmailSender>();
+
+
+        }
+    }
+}

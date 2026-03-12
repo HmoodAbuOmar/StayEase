@@ -21,12 +21,11 @@ namespace StayEase.BLL.Service
             var response = hotels.Adapt<List<HotelResponse>>();
             return response;
         }
-
         public HotelResponse Create(HotelRequest request)
         {
-            var result = request.Adapt<Hotel>();
-            _hotelRepository.Create(result);
-            return result.Adapt<HotelResponse>();
+            var hotel = request.Adapt<Hotel>();
+            _hotelRepository.Create(hotel);
+            return hotel.Adapt<HotelResponse>();
         }
 
     }

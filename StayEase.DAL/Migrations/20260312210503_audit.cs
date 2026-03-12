@@ -1,0 +1,63 @@
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace StayEase.DAL.Migrations
+{
+    /// <inheritdoc />
+    public partial class audit : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AddColumn<DateTime>(
+                name: "CreatedAt",
+                table: "Hotels",
+                type: "datetime2",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+
+            migrationBuilder.AddColumn<string>(
+                name: "CreatedBy",
+                table: "Hotels",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "");
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "UpdatedAt",
+                table: "Hotels",
+                type: "datetime2",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+
+            migrationBuilder.AddColumn<string>(
+                name: "UpdatedBy",
+                table: "Hotels",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "");
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropColumn(
+                name: "CreatedAt",
+                table: "Hotels");
+
+            migrationBuilder.DropColumn(
+                name: "CreatedBy",
+                table: "Hotels");
+
+            migrationBuilder.DropColumn(
+                name: "UpdatedAt",
+                table: "Hotels");
+
+            migrationBuilder.DropColumn(
+                name: "UpdatedBy",
+                table: "Hotels");
+        }
+    }
+}

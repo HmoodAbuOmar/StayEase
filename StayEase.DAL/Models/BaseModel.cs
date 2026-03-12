@@ -2,8 +2,10 @@
 {
     public class BaseModel
     {
-        public int Id { get; set; }
-        public int Status { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public string UpdatedBy { get; set; }
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
+
     }
 }

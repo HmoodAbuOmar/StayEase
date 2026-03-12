@@ -1,6 +1,6 @@
 ﻿namespace StayEase.DAL.Models
 {
-    public class Hotel
+    public class Hotel : BaseModel
     {
         public int Id { get; set; }
         public int StarRating { get; set; }
