@@ -154,12 +154,21 @@ namespace StayEase.BLL.Service
         }
         private async Task<string> GenerateAccessToken(ApplicationUser user)
         {
+            var roles = await _userManager.GetRolesAsync(user);
             var userClaims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.UserName)
+                new Claim(ClaimTypes.Name, user.UserName),
+
+
+                //new Claim(ClaimTypes.Role, string.Join(",", roles))
             };
+
+            foreach (var role in roles)
+            {
+                userClaims.Add(new Claim(ClaimTypes.Role, role));
+            }
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SecretKey"]!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

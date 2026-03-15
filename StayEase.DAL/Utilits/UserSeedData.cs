@@ -45,8 +45,8 @@ namespace StayEase.DAL.Utilits
                 await _userManager.CreateAsync(user3, "Hmood@44");
 
                 await _userManager.AddToRoleAsync(user1, "Admin");
-                await _userManager.AddToRoleAsync(user1, "User");
-                await _userManager.AddToRoleAsync(user1, "User");
+                await _userManager.AddToRoleAsync(user2, "User");
+                await _userManager.AddToRoleAsync(user3, "User");
 
             }
         }

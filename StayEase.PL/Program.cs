@@ -69,7 +69,7 @@ namespace StayEase.PL
                 options.SignIn.RequireConfirmedEmail = true;
 
                 options.Lockout.MaxFailedAccessAttempts = 5;
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(60);
 
 
             })

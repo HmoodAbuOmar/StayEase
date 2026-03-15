@@ -7,23 +7,24 @@ using StayEase.PL.Resources;
 
 namespace StayEase.PL.Areas.Admin
 {
-    [Route("api/Admin/[controller]")]
+    [Route("api/admin/[controller]")]
     [ApiController]
     [Authorize(Roles = "Admin")]
-    public class HotelsController : ControllerBase
+    public class RoomTypesController : ControllerBase
     {
+        private readonly IRoomTypeService _roomTypeService;
         private readonly IStringLocalizer<SharedResource> _localizer;
-        private readonly IHotelService _hotelService;
-        public HotelsController(IStringLocalizer<SharedResource> localizer, IHotelService hotelService)
+
+        public RoomTypesController(IRoomTypeService roomTypeService, IStringLocalizer<SharedResource> localizer)
         {
+            _roomTypeService = roomTypeService;
             _localizer = localizer;
-            _hotelService = hotelService;
         }
 
         [HttpGet("")]
-        public async Task<IActionResult> GetAllHotels()
+        public async Task<IActionResult> GetAll()
         {
-            var response = await _hotelService.GetAll();
+            var response = await _roomTypeService.GetAllAsync();
             return Ok(new
             {
                 message = _localizer["Success"].Value,
@@ -31,30 +32,32 @@ namespace StayEase.PL.Areas.Admin
             });
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetHotelById([FromRoute] int id)
+        [HttpPost("")]
+
+        public async Task<IActionResult> Create([FromBody] RoomTypeRequest request)
         {
-            var response = await _hotelService.GetById(id);
-
-            if (response is null)
+            await _roomTypeService.CreateAsync(request);
+            return Ok(new
             {
-                return NotFound(new { message = "Hotel not found" });
-            }
-            return Ok(response);
-
+                message = _localizer["Success"].Value,
+            });
         }
 
-        [HttpPost("")]
-        public async Task<IActionResult> CreateHotel([FromBody] HotelRequest request)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            await _hotelService.Create(request);
-            return Ok(new { message = _localizer["Success"].Value });
+            var response = await _roomTypeService.GetByIdAsync(id);
+            if (response is null)
+            {
+                return NotFound(new { message = "Room type not found" });
+            }
+            return Ok(response);
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> UpdateHotels([FromRoute] int id, [FromBody] HotelRequest request)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] RoomTypeRequest request)
         {
-            var result = await _hotelService.UpdateHotelAsync(id, request);
+            var result = await _roomTypeService.UpdateAsync(id, request);
             if (!result.Success)
             {
                 if (result.Message.Contains("not found"))
@@ -67,9 +70,9 @@ namespace StayEase.PL.Areas.Admin
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteHotel([FromRoute] int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var result = await _hotelService.DeleteAsync(id);
+            var result = await _roomTypeService.DeleteAsync(id);
             if (!result.Success)
             {
                 if (result.Message.Contains("not found"))
