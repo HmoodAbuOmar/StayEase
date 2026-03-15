@@ -100,44 +100,32 @@ namespace StayEase.BLL.Service
 
         public async Task<RegisterResponse> RegisterAsync(RegisterRequest request)
         {
-            try
-            {
-                var user = request.Adapt<ApplicationUser>();
-                var result = await _userManager.CreateAsync(user, request.Password);
+            var user = request.Adapt<ApplicationUser>();
+            var result = await _userManager.CreateAsync(user, request.Password);
 
-                if (!result.Succeeded)
-                {
-                    return new RegisterResponse
-                    {
-                        Success = false,
-                        Message = "User Creation Faield",
-                        Errors = result.Errors.Select(e => e.Description).ToList()
-                    };
-                }
-
-                await _userManager.AddToRoleAsync(user, "User");
-                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                token = Uri.EscapeDataString(token);
-
-                var emailUrl = $"https://localhost:7142/api/Identity/Account/ConfirmEmail?token={token}&userid={user.Id}";
-                await _emailSender.SendEmailAsync(user.Email, "Welcome to StayEase", $"<h1> Welcome .. {user.UserName}<h1> " +
-                    $"<a href='{emailUrl}'> Confirm Email <a/>");
-
-                return new RegisterResponse
-                {
-                    Success = true,
-                    Message = "Success"
-                };
-            }
-            catch (Exception ex)
+            if (!result.Succeeded)
             {
                 return new RegisterResponse
                 {
                     Success = false,
-                    Message = "An Unexepted errors",
-                    Errors = new List<string> { ex.Message }
+                    Message = "User Creation Faield",
+                    Errors = result.Errors.Select(e => e.Description).ToList()
                 };
             }
+
+            await _userManager.AddToRoleAsync(user, "User");
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            token = Uri.EscapeDataString(token);
+
+            var emailUrl = $"https://localhost:7142/api/Identity/Account/ConfirmEmail?token={token}&userid={user.Id}";
+            await _emailSender.SendEmailAsync(user.Email, "Welcome to StayEase", $"<h1> Welcome .. {user.UserName}<h1> " +
+                $"<a href='{emailUrl}'> Confirm Email <a/>");
+
+            return new RegisterResponse
+            {
+                Success = true,
+                Message = "Success"
+            };
         }
 
         public async Task<bool> ConfirmEmailAsync(string token, string userId)

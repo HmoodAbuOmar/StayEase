@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using StayEase.DAL.Data;
 using StayEase.DAL.Models;
 using StayEase.DAL.Utilits;
+using StayEase.PL.Middlewares;
 using System.Globalization;
 using System.Text;
 
@@ -102,6 +103,9 @@ namespace StayEase.PL
 
 
             var app = builder.Build();
+
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
+
             app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
             if (app.Environment.IsDevelopment())
@@ -112,7 +116,7 @@ namespace StayEase.PL
             }
 
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
@@ -127,8 +131,9 @@ namespace StayEase.PL
             }
 
 
-
             app.MapControllers();
+
+
 
             app.Run();
         }

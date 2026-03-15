@@ -42,91 +42,67 @@ namespace StayEase.BLL.Service
 
         public async Task<BaseResponse> UpdateHotelAsync(int id, HotelRequest Request)
         {
-            try
-            {
-                var hotels = await _hotelRepository.FindByIdAsync(id);
-                if (hotels is null)
-                {
-                    return new BaseResponse
-                    {
-                        Success = false,
-                        Message = "Hotel not found",
-                    };
-                }
-                if (Request.Translations != null)
-                {
-                    foreach (var translation in Request.Translations)
-                    {
-                        var existing = hotels.Translations.FirstOrDefault(t => t.Language == translation.Language);
-
-                        if (existing is not null)
-                        {
-                            existing.Language = translation.Language;
-                            existing.Name = translation.Name;
-                            existing.City = translation.City;
-                            existing.Country = translation.Country;
-                            hotels.StarRating = Request.StarRating;
-                            hotels.IsActive = Request.IsActive;
-                        }
-                        else
-                        {
-                            return new BaseResponse
-                            {
-                                Success = false,
-                                Message = $"Translation for language {translation.Language} not found",
-                            };
-                        }
-
-
-                    }
-                }
-                await _hotelRepository.UpdateAsync(hotels);
-                return new BaseResponse
-                {
-                    Success = true,
-                    Message = "Hotel updated successfully",
-                };
-            }
-            catch (Exception ex)
+            var hotels = await _hotelRepository.FindByIdAsync(id);
+            if (hotels is null)
             {
                 return new BaseResponse
                 {
                     Success = false,
-                    Message = "Cannot Update Hotels",
-                    Errors = new List<string> { ex.Message }
+                    Message = "Hotel not found",
                 };
             }
+            if (Request.Translations != null)
+            {
+                foreach (var translation in Request.Translations)
+                {
+                    var existing = hotels.Translations.FirstOrDefault(t => t.Language == translation.Language);
+
+                    if (existing is not null)
+                    {
+                        existing.Language = translation.Language;
+                        existing.Name = translation.Name;
+                        existing.City = translation.City;
+                        existing.Country = translation.Country;
+                        hotels.StarRating = Request.StarRating;
+                        hotels.IsActive = Request.IsActive;
+                    }
+                    else
+                    {
+                        return new BaseResponse
+                        {
+                            Success = false,
+                            Message = $"Translation for language {translation.Language} not found",
+                        };
+                    }
+
+
+                }
+            }
+            await _hotelRepository.UpdateAsync(hotels);
+            return new BaseResponse
+            {
+                Success = true,
+                Message = "Hotel updated successfully",
+            };
         }
 
         public async Task<BaseResponse> DeleteAsync(int id)
         {
-            try
-            {
-                var hotel = await _hotelRepository.FindByIdAsync(id);
-                if (hotel is null)
-                {
-                    return new BaseResponse
-                    {
-                        Success = false,
-                        Message = "Hotel not found",
-                    };
-                }
-                await _hotelRepository.DeleteAsync(hotel);
-                return new BaseResponse
-                {
-                    Success = true,
-                    Message = "Hotel deleted successfully",
-                };
-            }
-            catch (Exception ex)
+            var hotel = await _hotelRepository.FindByIdAsync(id);
+            if (hotel is null)
             {
                 return new BaseResponse
                 {
                     Success = false,
-                    Message = "Cannot Delete Hotel",
-                    Errors = new List<string> { ex.Message }
+                    Message = "Hotel not found",
                 };
             }
+            await _hotelRepository.DeleteAsync(hotel);
+            return new BaseResponse
+            {
+                Success = true,
+                Message = "Hotel deleted successfully",
+            };
         }
 
         public async Task<List<HotelResponse>> GetActiveHotelAsync()
