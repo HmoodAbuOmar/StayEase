@@ -17,6 +17,8 @@ namespace StayEase.PL
             Services.AddTransient<IEmailSender, EmailSender>();
             Services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
             Services.AddScoped<IRoomTypeService, RoomTypeService>();
+            Services.AddScoped<IRoomRepository, RoomRepository>();
+            Services.AddScoped<IRoomService, RoomService>();
 
 
         }

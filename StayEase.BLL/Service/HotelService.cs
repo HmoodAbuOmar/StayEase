@@ -15,21 +15,28 @@ namespace StayEase.BLL.Service
             _hotelRepository = hotelRepository;
         }
 
-        public async Task<List<HotelResponse>> GetAll()
+        public async Task<List<HotelResponse>> GetAllAsync(string lang = "en")
         {
             var hotels = await _hotelRepository.GetAllAsync();
-            var response = hotels.Adapt<List<HotelResponse>>();
+
+            var response = hotels.BuildAdapter()
+                .AddParameters("lang", lang)
+                .AdaptToType<List<HotelResponse>>();
+
             return response;
         }
 
-        public async Task<HotelResponse> GetById(int id)
+        public async Task<HotelResponse?> GetByIdAsync(int id, string lang = "en")
         {
             var hotel = await _hotelRepository.FindByIdAsync(id);
             if (hotel is null)
             {
                 return null;
             }
-            var response = hotel.Adapt<HotelResponse>();
+            var response = hotel.BuildAdapter()
+                .AddParameters("lang", lang)
+                .AdaptToType<HotelResponse>();
+
             return response;
         }
 

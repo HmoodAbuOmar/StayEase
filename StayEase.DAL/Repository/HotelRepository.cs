@@ -26,7 +26,8 @@ namespace StayEase.DAL.Repository
         }
         public async Task<Hotel?> FindByIdAsync(int id)
         {
-            return await _context.Hotels.Include(c => c.Translations).FirstOrDefaultAsync(c => c.Id == id);
+            return await _context.Hotels.Include(c => c.Translations)
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<Hotel> UpdateAsync(Hotel request)

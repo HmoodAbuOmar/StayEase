@@ -39,6 +39,11 @@ namespace StayEase.DAL.Data
             builder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaims");
             builder.Entity<IdentityUserToken<string>>().ToTable("UserTokens");
 
+
+            builder.Entity<Room>()
+                .HasIndex(r => new { r.HotelId, r.RoomNumber })
+                .IsUnique();
+
         }
 
 

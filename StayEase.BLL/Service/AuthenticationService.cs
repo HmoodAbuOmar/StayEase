@@ -149,9 +149,11 @@ namespace StayEase.BLL.Service
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Name, user.UserName),
 
-
-                //new Claim(ClaimTypes.Role, string.Join(",", roles))
+                new Claim(ClaimTypes.Role, string.Join(",", roles))
             };
+
+
+
 
             foreach (var role in roles)
             {

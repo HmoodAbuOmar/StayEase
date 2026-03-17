@@ -11,6 +11,5 @@ namespace StayEase.DAL.Repository
         Task DeleteAsync(RoomType request);
 
 
-
     }
 }

@@ -5,8 +5,8 @@ namespace StayEase.BLL.Service
 {
     public interface IHotelService
     {
-        Task<List<HotelResponse>> GetAll();
-        Task<HotelResponse> GetById(int id);
+        Task<List<HotelResponse>> GetAllAsync(string lang = "en");
+        Task<HotelResponse?> GetByIdAsync(int id, string lang = "en");
         Task<HotelResponse> Create(HotelRequest request);
         Task<BaseResponse> UpdateHotelAsync(int id, HotelRequest request);
         Task<BaseResponse> DeleteAsync(int id);

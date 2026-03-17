@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using StayEase.BLL.MapsterConfigurations;
 using StayEase.DAL.Data;
 using StayEase.DAL.Models;
 using StayEase.DAL.Utilits;
@@ -95,7 +96,7 @@ namespace StayEase.PL
            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecretKey"]!))
        };
    });
-
+            MapsterConfigurations.RegisterMappings();
 
             builder.Services.AddSwaggerGen();
 
