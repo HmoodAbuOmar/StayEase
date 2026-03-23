@@ -33,7 +33,7 @@ namespace StayEase.PL.Areas.Admin
             });
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetRoomById(int id, [FromQuery] string lang = "en")
+        public async Task<IActionResult> GetRoomById([FromRoute] int id, [FromQuery] string lang = "en")
         {
             var response = await _roomService.FindRoomByIdAsync(id, lang);
             if (response is null)
@@ -46,6 +46,22 @@ namespace StayEase.PL.Areas.Admin
                 response
             });
         }
+
+        [HttpGet("RoomNumber/{roomNumber}")]
+        public async Task<IActionResult> GetByRoomNumber([FromRoute] string roomNumber, [FromQuery] string lang = "en")
+        {
+            var response = await _roomService.GetByRoomNumberAsync(roomNumber, lang);
+            if (response is null)
+            {
+                return NotFound(new { message = "Room not found" });
+            }
+            return Ok(new
+            {
+                message = _localizer["Success"].Value,
+                response
+            });
+        }
+
 
         [HttpPost("")]
         public async Task<IActionResult> CreateRoom([FromBody] CreateRoomRequest request)

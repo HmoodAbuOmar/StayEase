@@ -15,7 +15,6 @@ namespace StayEase.DAL.Data
         public DbSet<Room> Rooms { get; set; }
         public DbSet<HotelTranslation> HotelTranslations { get; set; }
         public DbSet<RoomType> RoomTypes { get; set; }
-        public DbSet<Customer> Customers { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
 
 
@@ -43,6 +42,13 @@ namespace StayEase.DAL.Data
             builder.Entity<Room>()
                 .HasIndex(r => new { r.HotelId, r.RoomNumber })
                 .IsUnique();
+
+
+            builder.Entity<Reservation>()
+    .HasOne(r => r.ApplicationUser)
+    .WithMany()
+    .HasForeignKey(r => r.UserId)
+    .OnDelete(DeleteBehavior.Restrict);
 
         }
 

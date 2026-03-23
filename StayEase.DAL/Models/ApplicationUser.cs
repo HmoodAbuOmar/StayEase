@@ -9,5 +9,6 @@ namespace StayEase.DAL.Models
         public string? PhoneNumber { get; set; }
         public string? CodeResetPassword { get; set; }
         public DateTime? CodeResetPasswordExpiration { get; set; }
+
     }
 }

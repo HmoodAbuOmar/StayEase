@@ -40,6 +40,7 @@ namespace StayEase.BLL.Service
                .AdaptToType<RoomResponse>();
             return response;
         }
+
         public async Task<BaseResponse> CreateRoomAsync(CreateRoomRequest request)
         {
             var hotel = await _hotelRepository.FindByIdAsync(request.HotelId);
@@ -131,5 +132,22 @@ namespace StayEase.BLL.Service
               .AdaptToType<List<RoomResponse>>();
             return response;
         }
+
+        public async Task<RoomResponse?> GetByRoomNumberAsync(string id, string lang = "en")
+        {
+            var room = await _roomRepository.GetByRoomNumberAsync(id);
+
+            if (room is null)
+            {
+                return null;
+            }
+
+            var response = room.BuildAdapter()
+            .AddParameters("lang", lang)
+            .AdaptToType<RoomResponse>();
+
+            return response;
+        }
+
     }
 }

@@ -20,6 +20,21 @@ namespace StayEase.BLL.MapsterConfigurations
                         .FirstOrDefault(t => t.Language == MapContext.Current.Parameters["lang"].ToString())!.Name)
                 .Map(dest => dest.RoomTypeName,
                     src => src.RoomType.Name);
+
+            TypeAdapterConfig<Reservation, UserReservationResponse>.NewConfig()
+           .Map(dest => dest.RoomNumber,
+         src => src.Room.RoomNumber);
+
+            TypeAdapterConfig<Reservation, AdminReservationResponse>.NewConfig()
+    .Map(dest => dest.RoomNumber,
+         src => src.Room.RoomNumber)
+    .Map(dest => dest.RoomPricePerNight,
+         src => src.Room.PricePerNight)
+    .Map(dest => dest.UserFullName,
+         src => src.ApplicationUser.FullName)
+    .Map(dest => dest.UserEmail,
+         src => src.ApplicationUser.Email);
+
         }
     }
 }
