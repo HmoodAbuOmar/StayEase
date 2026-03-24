@@ -70,6 +70,7 @@ namespace StayEase.PL
                 options.User.RequireUniqueEmail = true;
                 options.SignIn.RequireConfirmedEmail = true;
 
+
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(60);
 
@@ -91,6 +92,9 @@ namespace StayEase.PL
            ValidateAudience = true,
            ValidateLifetime = true,
            ValidateIssuerSigningKey = true,
+
+           ClockSkew = TimeSpan.Zero, // الغاء فتره السماح بالتوكين
+
            ValidIssuer = builder.Configuration["JWT:Issuer"],
            ValidAudience = builder.Configuration["JWT:Audience"],
            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecretKey"]!))

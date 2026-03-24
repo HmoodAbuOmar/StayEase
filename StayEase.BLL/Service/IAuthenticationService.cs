@@ -11,6 +11,7 @@ namespace StayEase.BLL.Service
         Task<ForgetPasswordResponse> ForgetPassword(ForgetPasswordRequest request);
         Task<ResetPasswordResponse> ResetPassword(ResetPasswordRequest request);
 
+        Task<LoginResponse> RefreshTokenAsync(TokenApiModel request);
 
     }
 }

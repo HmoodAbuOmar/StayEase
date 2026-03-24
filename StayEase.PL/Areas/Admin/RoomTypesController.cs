@@ -83,5 +83,6 @@ namespace StayEase.PL.Areas.Admin
             }
             return Ok(result);
         }
+
     }
 }

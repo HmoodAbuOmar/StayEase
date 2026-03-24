@@ -18,5 +18,6 @@ namespace StayEase.DAL.DTO.Request
         public decimal PricePerNight { get; set; }
 
         public bool IsAvailable { get; set; } = true;
+
     }
 }

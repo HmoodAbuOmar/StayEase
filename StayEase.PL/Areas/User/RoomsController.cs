@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StayEase.BLL.Service;
 
 namespace StayEase.PL.Areas.User
 {
     [Route("api/user/[controller]")]
     [ApiController]
+    [Authorize(Roles = "User")]
     public class RoomsController : ControllerBase
     {
         private readonly IRoomService _roomService;

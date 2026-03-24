@@ -1,14 +1,11 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using StayEase.DAL.DTO.Request;
 using StayEase.DAL.DTO.Response;
 using StayEase.DAL.Models;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace StayEase.BLL.Service
 {
@@ -18,14 +15,17 @@ namespace StayEase.BLL.Service
         private readonly IConfiguration _configuration;
         private readonly IEmailSender _emailSender;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ITokenService _tokenService;
 
         public AuthenticationService(UserManager<ApplicationUser> userManager, IConfiguration configuration,
-            IEmailSender emailSender, SignInManager<ApplicationUser> signInManager)
+            IEmailSender emailSender, SignInManager<ApplicationUser> signInManager
+            , ITokenService tokenService)
         {
             _userManager = userManager;
             _configuration = configuration;
             _emailSender = emailSender;
             _signInManager = signInManager;
+            _tokenService = tokenService;
         }
         public async Task<LoginResponse> LoginAsync(LoginRequest request)
         {
@@ -80,11 +80,20 @@ namespace StayEase.BLL.Service
                     };
                 }
 
+                var accessToken = await _tokenService.GenerateAccessToken(user);
+                var refreshToken = _tokenService.GeneratedRefreshToken();
+                user.RefresshToken = refreshToken;
+                user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+
+                await _userManager.UpdateAsync(user);
+
+
                 return new LoginResponse
                 {
                     Success = true,
                     Message = "Login Successfully",
-                    AccessToken = await GenerateAccessToken(user)
+                    AccessToken = accessToken,
+                    RefreshToken = refreshToken,
                 };
             }
             catch (Exception ex)
@@ -140,37 +149,7 @@ namespace StayEase.BLL.Service
             }
             return true;
         }
-        private async Task<string> GenerateAccessToken(ApplicationUser user)
-        {
-            var roles = await _userManager.GetRolesAsync(user);
-            var userClaims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.UserName),
 
-                new Claim(ClaimTypes.Role, string.Join(",", roles))
-            };
-
-
-
-
-            foreach (var role in roles)
-            {
-                userClaims.Add(new Claim(ClaimTypes.Role, role));
-            }
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SecretKey"]!));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                issuer: _configuration["JWT:Issuer"],
-                audience: _configuration["JWT:Audience"],
-                claims: userClaims,
-                expires: DateTime.UtcNow.AddMinutes(30),
-                signingCredentials: creds);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
         public async Task<ForgetPasswordResponse> ForgetPassword(ForgetPasswordRequest request)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
@@ -251,5 +230,43 @@ namespace StayEase.BLL.Service
 
             };
         }
+
+        public async Task<LoginResponse> RefreshTokenAsync(TokenApiModel request)
+        {
+            string accessToken = request.AccessToken;
+            string refreshToken = request.RefreshToken;
+            var principal = _tokenService.GetPrincipalsFormExpiredToken(accessToken);
+
+            var userName = principal.Identity.Name;
+
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+
+            if (user is null || user.RefresshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+            {
+
+                return new LoginResponse()
+                {
+                    Success = false,
+                    Message = "invalid client request",
+                };
+            }
+
+            var newAccessToken = await _tokenService.GenerateAccessToken(user);
+            var newRefreshToken = _tokenService.GeneratedRefreshToken();
+            user.RefresshToken = newRefreshToken;
+
+            await _userManager.UpdateAsync(user);
+
+            return new LoginResponse
+            {
+                Success = true,
+                Message = "Token Refreshed",
+                AccessToken = newAccessToken,
+                RefreshToken = newRefreshToken,
+            };
+
+
+        }
+
     }
 }

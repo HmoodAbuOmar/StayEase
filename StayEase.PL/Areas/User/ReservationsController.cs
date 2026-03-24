@@ -9,7 +9,7 @@ namespace StayEase.PL.Areas.User
 {
     [Route("api/user/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "User")]
     public class ReservationsController : ControllerBase
     {
         private readonly IReservationService _reservationService;

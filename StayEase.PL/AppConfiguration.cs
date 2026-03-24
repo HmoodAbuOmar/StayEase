@@ -21,6 +21,7 @@ namespace StayEase.PL
             Services.AddScoped<IRoomService, RoomService>();
             Services.AddScoped<IReservationRepository, ReservationRepository>();
             Services.AddScoped<IReservationService, ReservationService>();
+            Services.AddScoped<ITokenService, TokenService>();
 
 
 

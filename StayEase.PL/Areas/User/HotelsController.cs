@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using StayEase.BLL.Service;
 using StayEase.PL.Resources;
@@ -7,6 +8,8 @@ namespace StayEase.PL.Areas.User
 {
     [Route("api/user/[controller]")]
     [ApiController]
+    [Authorize(Roles = "User")]
+
     public class HotelsController : ControllerBase
     {
         private readonly IStringLocalizer<SharedResource> _localizer;

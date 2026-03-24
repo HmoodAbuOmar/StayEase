@@ -35,10 +35,10 @@ namespace StayEase.DAL.Repository
         public async Task<Room?> GetByRoomNumberAsync(string roomNumber)
         {
             return await _context.Rooms
-       .Include(r => r.RoomType)
-       .Include(r => r.Hotel)
+           .Include(r => r.RoomType)
+           .Include(r => r.Hotel)
            .ThenInclude(h => h.Translations)
-       .FirstOrDefaultAsync(r => r.RoomNumber == roomNumber);
+           .FirstOrDefaultAsync(r => r.RoomNumber == roomNumber);
         }
         public async Task UpdateRoomAsync(Room room)
         {
@@ -66,5 +66,7 @@ namespace StayEase.DAL.Repository
                 .Where(r => r.IsAvailable)
                 .ToListAsync();
         }
+
     }
+
 }

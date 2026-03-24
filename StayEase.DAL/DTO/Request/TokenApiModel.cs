@@ -1,6 +1,6 @@
-﻿namespace StayEase.DAL.DTO.Response
+﻿namespace StayEase.DAL.DTO.Request
 {
-    public class LoginResponse : BaseResponse
+    public class TokenApiModel
     {
         public string? AccessToken { get; set; }
         public string? RefreshToken { get; set; }

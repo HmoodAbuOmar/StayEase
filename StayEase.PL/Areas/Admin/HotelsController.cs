@@ -19,6 +19,7 @@ namespace StayEase.PL.Areas.Admin
             _localizer = localizer;
             _hotelService = hotelService;
         }
+
         [HttpGet("")]
         public async Task<IActionResult> GetAllHotels([FromQuery] string lang = "en")
         {
@@ -84,5 +85,6 @@ namespace StayEase.PL.Areas.Admin
             }
             return Ok(result);
         }
+
     }
 }

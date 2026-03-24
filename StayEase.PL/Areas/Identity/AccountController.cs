@@ -65,5 +65,19 @@ namespace StayEase.PL.Areas.Identity
             }
             return Ok(result);
         }
+
+        [HttpPatch("RefreshToken")]
+
+        public async Task<IActionResult> RefreshToken(TokenApiModel request)
+        {
+            var result = await _authenticationService.RefreshTokenAsync(request);
+
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+
+        }
     }
 }
