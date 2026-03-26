@@ -17,6 +17,8 @@ namespace StayEase.DAL.Data
         public DbSet<RoomType> RoomTypes { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
 
+        public DbSet<Payment> Payments { get; set; }
+
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
             IHttpContextAccessor httpContextAccessor)
@@ -49,6 +51,13 @@ namespace StayEase.DAL.Data
     .WithMany()
     .HasForeignKey(r => r.UserId)
     .OnDelete(DeleteBehavior.Restrict);
+
+
+            builder.Entity<Payment>()
+     .HasOne(p => p.Reservation)
+     .WithMany(r => r.Payments)
+     .HasForeignKey(p => p.ReservationId)
+     .OnDelete(DeleteBehavior.Cascade);
 
         }
 

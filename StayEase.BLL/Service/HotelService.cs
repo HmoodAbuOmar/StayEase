@@ -40,11 +40,15 @@ namespace StayEase.BLL.Service
             return response;
         }
 
-        public async Task<HotelResponse> Create(HotelRequest request)
+        public async Task<BaseResponse> Create(HotelRequest request)
         {
             var hotel = request.Adapt<Hotel>();
             await _hotelRepository.CreateAsync(hotel);
-            return hotel.Adapt<HotelResponse>();
+            return new BaseResponse
+            {
+                Message = "Hotel Created Successfuly",
+                Success = true,
+            };
         }
 
         public async Task<BaseResponse> UpdateHotelAsync(int id, HotelRequest Request)
@@ -112,14 +116,17 @@ namespace StayEase.BLL.Service
             };
         }
 
-        public async Task<List<HotelResponse>> GetActiveHotelAsync()
+        public async Task<List<HotelResponse>> GetActiveHotelAsync(string lang = "en")
         {
             var hotel = await _hotelRepository.GetActiveHotelAsync();
             if (hotel is null)
             {
                 return null;
             }
-            var response = hotel.Adapt<List<HotelResponse>>();
+            var response = hotel.BuildAdapter()
+          .AddParameters("lang", lang)
+          .AdaptToType<List<HotelResponse>>();
+
             return response;
         }
     }

@@ -24,5 +24,7 @@ namespace StayEase.DAL.Models
         [ForeignKey(nameof(UserId))]
         public ApplicationUser ApplicationUser { get; set; } = null!;
 
+        public ICollection<Payment> Payments { get; set; } = new List<Payment>();
+
     }
 }

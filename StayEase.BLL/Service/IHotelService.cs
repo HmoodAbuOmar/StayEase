@@ -7,10 +7,10 @@ namespace StayEase.BLL.Service
     {
         Task<List<HotelResponse>> GetAllAsync(string lang = "en");
         Task<HotelResponse?> GetByIdAsync(int id, string lang = "en");
-        Task<HotelResponse> Create(HotelRequest request);
+        Task<BaseResponse> Create(HotelRequest request);
         Task<BaseResponse> UpdateHotelAsync(int id, HotelRequest request);
         Task<BaseResponse> DeleteAsync(int id);
-        Task<List<HotelResponse>> GetActiveHotelAsync();
+        Task<List<HotelResponse>> GetActiveHotelAsync(string lang = "en");
 
     }
 }

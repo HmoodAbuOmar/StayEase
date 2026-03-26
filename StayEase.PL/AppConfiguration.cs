@@ -22,6 +22,7 @@ namespace StayEase.PL
             Services.AddScoped<IReservationRepository, ReservationRepository>();
             Services.AddScoped<IReservationService, ReservationService>();
             Services.AddScoped<ITokenService, TokenService>();
+            Services.AddScoped<ICheckoutService, CheckoutService>();
 
 
 

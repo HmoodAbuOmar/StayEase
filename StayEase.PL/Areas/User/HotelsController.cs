@@ -22,9 +22,9 @@ namespace StayEase.PL.Areas.User
         }
 
         [HttpGet("")]
-        public async Task<IActionResult> GetActiveHotel()
+        public async Task<IActionResult> GetActiveHotel([FromQuery] string lang = "en")
         {
-            var response = await _hotelService.GetActiveHotelAsync();
+            var response = await _hotelService.GetActiveHotelAsync(lang);
             if (response is null)
             {
                 return NotFound(new { message = "No active hotel found" });

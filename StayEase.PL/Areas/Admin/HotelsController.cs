@@ -39,7 +39,7 @@ namespace StayEase.PL.Areas.Admin
 
             if (response is null)
             {
-                return NotFound(new { message = "Room type not found" });
+                return NotFound(new { message = "Hotel  not found" });
             }
 
             return Ok(new
@@ -53,7 +53,11 @@ namespace StayEase.PL.Areas.Admin
         public async Task<IActionResult> CreateHotel([FromBody] HotelRequest request)
         {
             var result = await _hotelService.Create(request);
-            return Ok(new { message = _localizer["Success"].Value });
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+            return Ok(new { message = _localizer["Success"].Value, result });
         }
 
         [HttpPatch("{id}")]

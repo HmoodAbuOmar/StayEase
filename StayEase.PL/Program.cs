@@ -5,11 +5,13 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using StayEase.BLL;
 using StayEase.BLL.MapsterConfigurations;
 using StayEase.DAL.Data;
 using StayEase.DAL.Models;
 using StayEase.DAL.Utilits;
 using StayEase.PL.Middlewares;
+using Stripe;
 using System.Globalization;
 using System.Text;
 
@@ -26,6 +28,9 @@ namespace StayEase.PL
 
             builder.Services.AddOpenApi();
 
+            builder.Services
+           .Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+            StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
             builder.Services.AddLocalization(options => options.ResourcesPath = "");
 
