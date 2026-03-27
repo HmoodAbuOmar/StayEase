@@ -19,6 +19,8 @@ namespace StayEase.DAL.Data
 
         public DbSet<Payment> Payments { get; set; }
 
+        public DbSet<Review> Reviews { get; set; }
+
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
             IHttpContextAccessor httpContextAccessor)

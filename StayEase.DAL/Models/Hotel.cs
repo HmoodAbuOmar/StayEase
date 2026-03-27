@@ -7,5 +7,7 @@
         public bool IsActive { get; set; } = true;
         public ICollection<HotelTranslation> Translations { get; set; }
         public ICollection<Room> Rooms { get; set; }
+
+        public ICollection<Review> Reviews { get; set; }
     }
 }
