@@ -23,7 +23,7 @@ namespace StayEase.BLL.Service
                 return new BaseResponse
                 {
                     Success = false,
-                    Message = "Check-out date must be after check-in date."
+                    Message = "Check-out date must be after checkIn date."
                 };
             }
 

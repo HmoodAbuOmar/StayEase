@@ -23,6 +23,18 @@ namespace StayEase.PL
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            var MyAllowSpecificOrigins = "_myHmoodOrigins";
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  policy =>
+                                  {
+                                      policy.AllowAnyOrigin().
+                                      AllowAnyMethod().
+                                      AllowAnyHeader();
+                                  });
+            });
 
             builder.Services.AddControllers();
 
@@ -124,6 +136,8 @@ namespace StayEase.PL
                 app.UseSwaggerUI();
                 app.MapOpenApi();
             }
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseHttpsRedirection();
             app.UseAuthentication();

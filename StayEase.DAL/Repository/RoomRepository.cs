@@ -52,10 +52,7 @@ namespace StayEase.DAL.Repository
             await _context.SaveChangesAsync();
         }
 
-        public Task<List<Room>> GetRoomsByHotelIdAsync(int hotelId)
-        {
-            throw new NotImplementedException();
-        }
+
 
         public Task<List<Room>> GetAvailableRoomsAsync()
         {
