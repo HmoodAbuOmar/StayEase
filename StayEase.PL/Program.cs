@@ -38,6 +38,8 @@ namespace StayEase.PL
 
             builder.Services.AddControllers();
 
+            builder.Services.AddMemoryCache();
+
             builder.Services.AddOpenApi();
 
             builder.Services
